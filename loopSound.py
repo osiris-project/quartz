@@ -17,6 +17,6 @@ class LoopSound:
         self.loopThread = Thread(target=self.soundLoop)
         self.loopThread.start()
 
-    def end(self):
+    def stop(self):
         self.looping = False
         self.loopThread.join()
