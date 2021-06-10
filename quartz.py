@@ -1,9 +1,7 @@
 from soundPlayer import SoundPlayer
 
 def terminalDriver():
-    """
-    A driver for the audioPlayer through a terminal interface. 
-    """
+    """A driver for the audioPlayer through a terminal interface."""
     soundPlayer = SoundPlayer()
     lineIn = input("Input file name: ")
     while lineIn != 'q':

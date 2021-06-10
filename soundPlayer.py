@@ -18,6 +18,7 @@ class SoundPlayer:
         """
         baseDirectory = "./sounds/"
         audioFiles = glob(baseDirectory + "**/*" + soundName + "*", recursive=True)
+        #TODO: Check for correct file type
         #TODO: Figure out the "Weird sample rates are not supported."
         """
         The following sample rates are allowed (though not necessarily guaranteed to be supported on your platform/hardware): 
@@ -25,7 +26,7 @@ class SoundPlayer:
         """
         if len(audioFiles) > 0:
             if looping:
-                self.loopingSounds.append(LoopSound(audioFiles[0]))
+                self.loopingSounds.append(LoopSound(audioFiles[0], soundName))
             else:
                 waveObj = sa.WaveObject.from_wave_file(audioFiles[0])
                 waveObj.play()
@@ -33,25 +34,19 @@ class SoundPlayer:
             print("No sound file found")
 
     def stopRepeating(self, soundName):
-        """
-        Stops given currently repeating sound after it has finished playing its current loop
-        """
+        """Stops given currently repeating sound after it has finished playing its current loop"""
         for sound in self.loopingSounds:
-            if soundName in sound.soundFile:
+            if soundName == sound.getSoundName():
                 sound.stop()
 
     def stopAll(self):
-        """
-        Immediately stops all playing sounds, including looping.
-        """
+        """Immediately stops all playing sounds, including looping."""
         sa.stop_all()
         for sound in self.loopingSounds:
             sound.stopImmediately()
     
 
     def stopAllRepeating(self):
-        """
-        Stops all currently repeating sounds after they have finished playing their current loop
-        """
+        """Stops all currently repeating sounds after they have finished playing their current loop"""
         for sound in self.loopingSounds:
             sound.stop()
