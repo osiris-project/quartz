@@ -1,6 +1,7 @@
 from loopSound import LoopSound
 from playsound import playsound
 from glob import glob
+import simpleaudio as sa
 
 class SoundPlayer:
     def __init__(self):
@@ -13,19 +14,24 @@ class SoundPlayer:
             if looping:
                 self.loopingSounds.append(LoopSound(audioFiles[0]))
             else:
-                playsound(audioFiles[0])
+                waveObj = sa.WaveObject.from_wave_file(audioFiles[0])
+                waveObj.play()
         else:
             print("No sound file found")
 
 
     def testingDriver(self):
         lineIn = input("Input file name: ")
-        while lineIn != "q":
+        while lineIn != 'q':
             inputs = lineIn.split(" ")
             #TODO Validate inputs
-            if inputs[0] == "/" : 
+            if lineIn == 'stop all repeating' :
                 for sound in self.loopingSounds:
                     sound.stop()
+            elif lineIn == 'stop all':
+                sa.stop_all()
+                for sound in self.loopingSounds:
+                    sound.stopImmediately()
             elif len(inputs) > 1:
                 if str.lower(inputs[1]) == 'looping' or str.lower(inputs[1]) == 'loop':
                     self.playSound(inputs[0], True)
@@ -38,8 +44,9 @@ class SoundPlayer:
             lineIn = input()
 
         #Exiting
+        sa.stop_all()
         for sound in self.loopingSounds:
-            sound.stop()
+            sound.stopImmediately()
 
 if __name__ == "__main__":
     soundPlayer = SoundPlayer()
