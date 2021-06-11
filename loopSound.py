@@ -7,9 +7,8 @@ class LoopSound:
     Automatically creates a new thread when starting the loop to keep it playing 
     without interrupting any other functionality.
     """
-    def __init__(self, soundFile, soundName):
+    def __init__(self, soundFile):
         self.soundFile = soundFile
-        self.soundName = soundName
         self.looping = True
         self.loopThread = None
         self.playObj = None
@@ -36,6 +35,3 @@ class LoopSound:
         """Stops sound immediately"""
         self.playObj.stop()
         self.looping = False
-
-    def getSoundName(self):
-        return self.soundName

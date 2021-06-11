@@ -1,6 +1,11 @@
 from loopSound import LoopSound
-from glob import glob
 import simpleaudio as sa
+
+"""
+The following sample rates are allowed (though not necessarily guaranteed to be supported on your platform/hardware): 
+8, 11.025, 16, 22.05, 32, 44.1, 48, 88.2, 96, and 192 kHz.
+"""
+SUPPORTED_SAMPLE_RATES = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88.200, 96000, 192000]
 
 class SoundPlayer:
     """
@@ -11,32 +16,23 @@ class SoundPlayer:
         self.loopingSounds = []
 
 
-    def playSound(self, soundName, looping=False):
+    def playSound(self, fileName, looping=False):
         """
-        Given a sound effect name, and bool for whether or not the sound should be looping, 
+        Given a sound file, and bool for whether or not the sound should be looping, 
         searches for the sound under the 'sound' directory, and plays it accordingly.
         """
-        baseDirectory = "./sounds/"
-        audioFiles = glob(baseDirectory + "**/*" + soundName + "*", recursive=True)
-        #TODO: Check for correct file type
-        #TODO: Figure out the "Weird sample rates are not supported."
-        """
-        The following sample rates are allowed (though not necessarily guaranteed to be supported on your platform/hardware): 
-        8, 11.025, 16, 22.05, 32, 44.1, 48, 88.2, 96, and 192 kHz.
-        """
-        if len(audioFiles) > 0:
-            if looping:
-                self.loopingSounds.append(LoopSound(audioFiles[0], soundName))
-            else:
-                waveObj = sa.WaveObject.from_wave_file(audioFiles[0])
-                waveObj.play()
+        waveObj = sa.WaveObject.from_wave_file(fileName)
+        if waveObj.sample_rate not in SUPPORTED_SAMPLE_RATES:
+            raise ValueError
+        if looping:
+            self.loopingSounds.append(LoopSound(fileName))
         else:
-            print("No sound file found")
+            waveObj.play()
 
-    def stopRepeating(self, soundName):
+    def stopRepeating(self, fileName):
         """Stops given currently repeating sound after it has finished playing its current loop"""
         for sound in self.loopingSounds:
-            if soundName == sound.getSoundName():
+            if fileName == sound.soundFile:
                 sound.stop()
 
     def stopAll(self):
