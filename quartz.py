@@ -1,14 +1,16 @@
 from soundPlayer import SoundPlayer
 from glob import glob
+import os
 
 BASE_DIRECTORY = "./sounds/"
 
 def getFile(soundName):
     """Returns the first matching file from the given name in the 'sounds' directory"""
-    audioFiles = glob(BASE_DIRECTORY + "**/*" + soundName + ".wav", recursive=True)
-    if (len(audioFiles) < 1):
+    path = os.path.join(os.path.curdir, 'sounds', 'Sounds', soundName + '.wav')
+    if os.path.exists(path):
+        return path
+    else:
         raise FileNotFoundError
-    return audioFiles[0]
 
 def terminalDriver():
     """A driver for the audioPlayer through a terminal interface."""
