@@ -1,12 +1,11 @@
 from soundPlayer import SoundPlayer
-from glob import glob
 import os
 
 BASE_DIRECTORY = "./sounds/"
 
 def getFile(soundName):
-    """Returns the first matching file from the given name in the 'sounds' directory"""
-    path = os.path.join(os.path.curdir, 'sounds', 'Sounds', soundName + '.wav')
+    """Given the name of the sound file, returns the full file from the 'sounds' directory"""
+    path = os.path.join(os.path.curdir, 'sounds', soundName + '.wav')
     if os.path.exists(path):
         return path
     else:
@@ -18,7 +17,6 @@ def terminalDriver():
     lineIn = input("Input file name: ")
     while lineIn != 'q':
         inputs = lineIn.rsplit(" ", 1)
-        #TODO Validate inputs
         try:
             if lineIn == 'stop all repeating' :
                 soundPlayer.stopAllRepeating()
