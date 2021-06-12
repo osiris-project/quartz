@@ -33,8 +33,8 @@ def terminalDriver():
                 soundPlayer.playSound(getFile(lineIn))
         except FileNotFoundError:
             print("File not found")
-        except ValueError:
-            print("File has unsuported sample rate")
+        except ValueError as e:
+            print(e.args[0])
         lineIn = input()
 
     #Exiting
