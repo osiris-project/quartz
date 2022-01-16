@@ -1,0 +1,1 @@
+Place sound files into this folder for the sound player to find and use them
