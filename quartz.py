@@ -1,4 +1,5 @@
 from soundPlayer import SoundPlayer
+from wave import Error as Wave_Error
 import os
 
 BASE_DIRECTORY = "./sounds/"
@@ -33,6 +34,8 @@ def terminalDriver():
                 soundPlayer.playSound(getFile(lineIn))
         except FileNotFoundError:
             print("File not found")
+        except Wave_Error as wave_error:
+            print(wave_error)
         except ValueError as e:
             print(e.args[0])
         lineIn = input()
