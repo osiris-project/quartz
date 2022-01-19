@@ -5,12 +5,14 @@ import os
 BASE_DIRECTORY = "./sounds/"
 
 def getFile(soundName):
-    """Given the name of the sound file, returns the full file from the 'sounds' directory"""
-    path = os.path.join(os.path.curdir, 'sounds', soundName + '.wav')
+    """Given the name of the sound file, returns the full file from the 'sounds' directory
+    Alternatively given a full file path, it will return it, adding a .wav if necessary"""
+    if len(soundName) > 3 and soundName[-4:] != '.wav':
+        soundName += '.wav'
+    path = os.path.join(os.path.curdir, 'sounds', soundName)
     if os.path.exists(path):
         return path
-    else:
-        raise FileNotFoundError
+    raise FileNotFoundError
 
 def terminalDriver():
     """A driver for the audioPlayer through a terminal interface."""
