@@ -1,49 +1,51 @@
-from soundPlayer import SoundPlayer
-from wave import Error as Wave_Error
+"""Holds all functions necessary to run soundplayer on terminal"""
+
 import os
+from wave import Error as Wave_Error
+from soundPlayer import SoundPlayer
 
 BASE_DIRECTORY = "./sounds/"
 
-def getFile(soundName):
+def get_file(sound_name):
     """Given the name of the sound file, returns the full file from the 'sounds' directory
     Alternatively given a full file path, it will return it, adding a .wav if necessary"""
-    if len(soundName) > 3 and soundName[-4:] != '.wav':
-        soundName += '.wav'
-    path = os.path.join(os.path.curdir, 'sounds', soundName)
+    if len(sound_name) > 3 and sound_name[-4:] != '.wav':
+        sound_name += '.wav'
+    path = os.path.join(os.path.curdir, 'sounds', sound_name)
     if os.path.exists(path):
         return path
     raise FileNotFoundError
 
-def terminalDriver():
+def terminal_driver():
     """A driver for the audioPlayer through a terminal interface."""
-    soundPlayer = SoundPlayer()
-    lineIn = input("Input file name: ")
-    while lineIn != 'q':
-        inputs = lineIn.rsplit(" ", 1)
+    sound_player = SoundPlayer()
+    line_in = input("Input file name: ")
+    while line_in != 'q':
+        inputs = line_in.rsplit(" ", 1)
         try:
-            if lineIn == 'stop all repeating' :
-                soundPlayer.stopAllRepeating()
-            elif lineIn == 'stop all':
-                soundPlayer.stopAll()
+            if line_in == 'stop all repeating' :
+                sound_player.stopAllRepeating()
+            elif line_in == 'stop all':
+                sound_player.stopAll()
             elif len(inputs) > 1:
                 if str.lower(inputs[1]) == 'looping' or str.lower(inputs[1]) == 'loop':
-                    soundPlayer.playSound(getFile(inputs[0]), True)
+                    sound_player.playSound(get_file(inputs[0]), True)
                 elif str.lower(inputs[1]) == 'stop':
-                    soundPlayer.stopRepeating(getFile(inputs[0]))
+                    sound_player.stopRepeating(get_file(inputs[0]))
                 else:
-                    soundPlayer.playSound(getFile(lineIn))
+                    sound_player.playSound(get_file(line_in))
             else:
-                soundPlayer.playSound(getFile(lineIn))
+                sound_player.playSound(get_file(line_in))
         except FileNotFoundError:
             print("File not found")
         except Wave_Error as wave_error:
             print(wave_error)
-        except ValueError as e:
-            print(e.args[0])
-        lineIn = input()
+        except ValueError as error:
+            print(error.args[0])
+        line_in = input()
 
     #Exiting
-    soundPlayer.stopAll()
+    sound_player.stopAll()
 
 if __name__ == "__main__":
-    terminalDriver()
+    terminal_driver()
