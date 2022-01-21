@@ -7,13 +7,15 @@ from soundPlayer import SoundPlayer
 BASE_DIRECTORY = "./sounds/"
 
 def get_file(sound_name):
-    """Given the name of the sound file, returns the full file from the 'sounds' directory
-    Alternatively given a full file path, it will return it, adding a .wav if necessary"""
-    if len(sound_name) > 3 and sound_name[-4:] != '.wav':
-        sound_name += '.wav'
-    path = os.path.join(os.path.curdir, 'sounds', sound_name)
-    if os.path.exists(path):
-        return path
+    """Given the name of the sound file, returns the full file from the 'sounds' directory"""
+    while len(sound_name) >= 3 and sound_name[:3] == '../':
+        sound_name = sound_name[3:]
+    if len(sound_name) > 0:
+        if len(sound_name) > 3 and sound_name[-4:] != '.wav':
+            sound_name += '.wav'
+        path = os.path.join(BASE_DIRECTORY, sound_name)
+        if os.path.exists(path) and os.path.isfile(path):
+            return path
     raise FileNotFoundError
 
 def terminal_driver():
